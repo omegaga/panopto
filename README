@@ -4,13 +4,17 @@ public API.
 Usage:
 
 To download a specific video  
-`./downloader`
+$ ./downloader
 
 To download all videos  
-`./downloader -a`
+$ ./downloader -a
 
 To download a specific video using its uuid  
-`./fetch -u uuid -o file`
+$ ./fetch -u uuid -o file
 
 WARNING: the script is (to some extent) untested, and it is not written to fit
 all circumstances. Please take your own risk to use it.
+
+WARNING: You should not disobey terms and policies of Panopto when using this
+script. Please keep this files silently on your device and DO NOT upload or
+distribute them elsewhere :)
