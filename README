@@ -1,0 +1,16 @@
+This is scripts intended to download lecture videos hosted on Panopto using its
+public API.
+
+Usage:
+
+To download a specific video  
+`./downloader`
+
+To download all videos  
+`./downloader -a`
+
+To download a specific video using its uuid  
+`./fetch -u uuid -o file`
+
+WARNING: the script is (to some extent) untested, and it is not written to fit
+all circumstances. Please take your own risk to use it.
