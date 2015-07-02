@@ -4,13 +4,13 @@ public API.
 Usage:
 
 To download a specific video  
-$ ./downloader
+$ ./downloader.py
 
 To download all videos  
-$ ./downloader -a
+$ ./downloader.py -a
 
 To download a specific video using its uuid  
-$ ./fetch -u uuid -o file
+$ ./fetch.py -u uuid -o file
 
 WARNING: the script is (to some extent) untested, and it is not written to fit
 all circumstances. Please take your own risk to use it.
