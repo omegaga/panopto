@@ -51,6 +51,7 @@ def download_video(video_url, filename):
     with open(filename, 'wb') as fp:
         while True:
             percent = 100.0 * chunk_count * CHUNK / total_length
+            percent = min(percent, 100.0)
             stdout.write("\r%.2f%%" % percent)
             stdout.flush()
             chunk = video_req.read(CHUNK)
