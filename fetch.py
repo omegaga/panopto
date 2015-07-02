@@ -4,7 +4,8 @@ from sys import argv, stdout, exit
 from urllib2 import urlopen
 from getopt import getopt
 
-CHUNK = 16 * 1024
+# chunk size when downloading file
+CHUNK = 256 * 1024
 
 def read_args(argv):
     filename = None
@@ -46,19 +47,19 @@ def fetch_video_url(uuid):
 
 def download_video(video_url, filename):
     video_req = urlopen(video_url)
-    chunk_count = 0
-    total_length = float(video_req.headers.get('content-length'))
+    downloaded = 0
+    total_length = float(video_req.headers.get('content-length').strip())
     with open(filename, 'wb') as fp:
         while True:
-            percent = 100.0 * chunk_count * CHUNK / total_length
-            percent = min(percent, 100.0)
-            stdout.write("\r%.2f%%" % percent)
-            stdout.flush()
             chunk = video_req.read(CHUNK)
             if not chunk:
                 break
             fp.write(chunk)
-            chunk_count += 1
+            downloaded += len(chunk)
+            percent = 100.0 * downloaded / total_length
+            percent = min(percent, 100.0)
+            stdout.write("\r%.2f%%" % percent)
+            stdout.flush()
 
 def fetch_video(filename, uuid):
     print 'Fetching video %s' % filename
