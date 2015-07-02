@@ -4,6 +4,7 @@ from urllib2 import urlopen, HTTPError
 import json
 from sys import argv, exit, stderr
 from getopt import getopt
+import string
 
 
 # folder id of 15-213 Introduction to Computer Systems, change if necessary
@@ -30,12 +31,17 @@ def read_args(argv):
 def usage():
     print 'Usage: %s [-a]' % argv[0]
 
+def valid_name(filename):
+    valid_chars = "-_.() %s%s" % (string.ascii_letters, string.digits)
+    return ''.join(c for c in filename if c in valid_chars)
+
 def get_sessions(folder_id):
     url = 'https://scs.hosted.panopto.com/Panopto/PublicAPI/4.1/ListSessions'\
         + '?FolderId=%s' % folder_id
     req = urlopen(url)
     res = json.loads(req.read())
-    video_list = [(e['Id'], '%s.mp4' % e['Name']) for e in res['Results']]
+    video_list = [(e['Id'], valid_name('%s.mp4' % e['Name']))
+            for e in res['Results']]
     return video_list
 
 if __name__ == '__main__':
