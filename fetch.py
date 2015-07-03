@@ -7,6 +7,7 @@ from getopt import getopt
 # chunk size when downloading file
 CHUNK = 256 * 1024
 
+
 def read_args(argv):
     filename = None
     uuid = None
@@ -34,16 +35,19 @@ def read_args(argv):
         exit(1)
     return filename, uuid
 
+
 def usage():
     print 'Usage: %s -u uuid -o file' % argv[0]
 
+
 def fetch_video_url(uuid):
     url =\
-      'http://scs.hosted.panopto.com/Panopto/PublicAPI/4.1/TabletDeliveryInfo'\
-      + '?DeliveryId=%s&forDownload=true' % uuid
+        'http://scs.hosted.panopto.com/Panopto/PublicAPI/4.1/TabletDeliveryInfo'\
+        + '?DeliveryId=%s&forDownload=true' % uuid
     req = urlopen(url)
     res = json.loads(req.read())
     return res['PhoneDownloadUrl']
+
 
 def download_video(video_url, filename):
     video_req = urlopen(video_url)
@@ -60,6 +64,7 @@ def download_video(video_url, filename):
             percent = min(percent, 100.0)
             stdout.write("\r%.2f%%" % percent)
             stdout.flush()
+
 
 def fetch_video(filename, uuid):
     print 'Fetching video %s' % filename
