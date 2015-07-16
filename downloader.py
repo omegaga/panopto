@@ -33,6 +33,7 @@ def usage():
 def get_sessions(folder_id):
     url = 'https://scs.hosted.panopto.com/Panopto/PublicAPI/4.1/ListSessions'\
         + '?FolderId=%s' % folder_id
+    print "Fetching video list, please wait..."
     req = urlopen(url)
     res = json.loads(req.read())
     video_list = [(e['Id'], '%s.mp4' % e['Name']) for e in res['Results']]
