@@ -5,9 +5,12 @@ from urllib2 import urlopen
 from getopt import getopt
 import os
 import platform
+<<<<<<< HEAD
 
 # chunk size when downloading file
 CHUNK = 256 * 1024
+=======
+>>>>>>> c1c65b1e8f75351b4b977cf9ed0572ce5967cec7
 
 
 def read_args(argv):
@@ -50,7 +53,6 @@ def fetch_video_url(uuid):
     res = json.loads(req.read())
     return res['PhoneDownloadUrl']
 
-
 def advanced_downloader(downloader):
 
     def wrapper(video_url, filename):
@@ -73,8 +75,8 @@ def download_video(video_url, filename):
         while True:
             percent = 100.0 * chunk_count * CHUNK / total_length
             percent = min(percent, 100.0)
-            stdout.write("\rsize: %.2fMB\tdownloaded: %.2f%%"
-                         % (total_length_MB, percent))
+            stdout.write("\rsize: %.2fMB\tdownloaded: %.2f%%"\
+                % (total_length_MB, percent))
             stdout.flush()
             chunk = video_req.read(CHUNK)
             if not chunk:
