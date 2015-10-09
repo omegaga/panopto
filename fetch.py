@@ -3,6 +3,8 @@ import json
 from sys import argv, stdout, exit
 from urllib2 import urlopen
 from getopt import getopt
+import os
+import platform
 
 # chunk size when downloading file
 CHUNK = 256 * 1024
@@ -49,24 +51,40 @@ def fetch_video_url(uuid):
     return res['PhoneDownloadUrl']
 
 
+def advanced_downloader(downloader):
+
+    def wrapper(video_url, filename):
+        if platform.system() == "Linux":
+            if os.path.exists("/usr/bin/wget"):
+                os.system("wget " + video_url + " -O '" + filename + "'")
+        else:
+            downloader(video_url, filename)
+
+    return wrapper
+
+
+@advanced_downloader
 def download_video(video_url, filename):
     video_req = urlopen(video_url)
-    downloaded = 0
-    total_length = float(video_req.headers.get('content-length').strip())
+    chunk_count = 0
+    total_length = float(video_req.headers.get('content-length'))
+    total_length_MB = total_length / (1000 * 1000)
     with open(filename, 'wb') as fp:
         while True:
+            percent = 100.0 * chunk_count * CHUNK / total_length
+            percent = min(percent, 100.0)
+            stdout.write("\rsize: %.2fMB\tdownloaded: %.2f%%"
+                         % (total_length_MB, percent))
+            stdout.flush()
             chunk = video_req.read(CHUNK)
             if not chunk:
                 break
             fp.write(chunk)
-            downloaded += len(chunk)
-            percent = 100.0 * downloaded / total_length
-            percent = min(percent, 100.0)
-            stdout.write("\r%.2f%%" % percent)
-            stdout.flush()
+            chunk_count += 1
 
 
 def fetch_video(filename, uuid):
+    filename = filename.replace('/', '')
     print 'Fetching video %s' % filename
     print 'Fetching video url...'
     video_url = fetch_video_url(uuid)
